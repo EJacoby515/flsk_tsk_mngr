@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="mb-0">Welcome, {{ session['user'] }}</h4>
+    </div>
+    <div class="card-body">
+        <p>You are now logged in.</p>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+{% endblock %}
