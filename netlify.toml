@@ -1,12 +1,8 @@
-[
-build
-]
-    base ='/'
-    publish ='/'
-    command = 'python __init__.py'
+[build]
+  base = "/"
+  publish = "/"
+  command = "python __init__.py"
 
-[
-build.environment
-]
-    PYTHON_VERSION = '3.12.2'
-    FLASK_APP = '__init__.py'
+[build.environment]
+  PYTHON_VERSION = "3.12.2"
+  FLASK_APP = "__init__.py"
