@@ -12,19 +12,26 @@ from openai import OpenAI
 
 client = OpenAI(api_key=os.environ.get("GPT_API_KEY"))
 
-app = Flask(__name__, static_folder='static')
-app.config.from_object(Config)
-app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(site_bp, template_folder='site')
-app.register_blueprint(api_bp, template_folder='api')
-db.init_app(app)
-migrate = Migrate(app, db)
+def create_app():
+    app = Flask(__name__, static_folder='static')
+    app.config.from_object(Config)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(site_bp, template_folder='site')
+    app.register_blueprint(api_bp, template_folder='api')
+    db.init_app(app)
+    migrate = Migrate(app, db)
 
-# Disable caching for static files
-@app.route('/static/<path:path>')
-def serve_static(path):
-    return send_from_directory('static', path, cache_timeout=0)
+    # Disable caching for static files
+    @app.route('/static/<path:path>')
+    def serve_static(path):
+        return send_from_directory('static', path, cache_timeout=0)
 
+    # Make the cache_buster function available to Jinja templates
+    app.context_processor(lambda: dict(cache_buster=cache_buster))
+
+    app.secret_key = os.environ.get('SECRET_KEY')
+
+    return app
 
 def call_gpt_api(priority, title, status):
     # Prepare the prompt for the GPT API
@@ -56,10 +63,3 @@ def call_gpt_api(priority, title, status):
     suggested_order = [title.split('. ', 1)[-1] for title in suggested_order]
 
     return suggested_order
-
-# Make the cache_buster function available to Jinja templates
-app.context_processor(lambda: dict(cache_buster=cache_buster))
-
-app.secret_key = os.environ.get('SECRET_KEY')
-
-

@@ -107,6 +107,36 @@ main {
     flex: 1;
 }
 
+.tasks-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+#task-list.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+    #task-list.card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    #task-list.card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    #task-list.card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Card Grid */
 .card-grid {
     display: grid;
