@@ -12,8 +12,9 @@ from openai import OpenAI
 
 client = OpenAI(api_key=os.environ.get("GPT_API_KEY"))
 
+app = Flask(__name__, static_folder='static')
+
 def create_app():
-    app = Flask(__name__, static_folder='static')
     app.config.from_object(Config)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(site_bp, template_folder='site')
