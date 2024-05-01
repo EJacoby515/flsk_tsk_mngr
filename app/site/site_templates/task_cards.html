@@ -1,0 +1,21 @@
+{% for task in tasks %}
+<div class="card">
+    <div class="card-header priority-{{ task[4].lower() }}"></div>
+    <div class="card-content">
+        <h4 class="card-title">{{ task[2] }}</h4>
+        <p>Description: {{ task[3] }}</p>
+        <p>Status: {{ task[5] }}</p>
+        <p>Created At: {{ task[6] }}</p>
+        <p>Modified At: {{ task[7] }}</p>
+    </div>
+    <div class="card-actions">
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editTaskModal"
+           data-task-id="{{ task[0] }}" data-task-title="{{ task[2] }}" data-task-description="{{ task[3] }}"
+           data-task-priority="{{ task[4] }}" data-task-status="{{ task[5] }}">Edit</a>
+        <form action="{{ url_for('api.task', task_id=task[0]) }}" method="POST" class="delete-form">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
+{% endfor %}

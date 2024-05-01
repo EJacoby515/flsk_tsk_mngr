@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% set user_id = user_id %}
+{% block content %}
+<div class="landing-container">
+    <div class="hero">
+        <h1>Welcome to Task Manager</h1>
+        <p>Simplify your life and stay organized with our task management app.</p>
+        {% if 'user' not in session %}
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Get Started</a>
+        {% endif %}
+    </div>
+    <div class="features">
+        <div class="feature">
+            <i class="fas fa-chart-pie"></i>
+            <h3>Analytics</h3>
+            <p>Get insights and statistics about your task completion and productivity.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Responsive Design</h3>
+            <p>Access your tasks from any device with our responsive, mobile-friendly design.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

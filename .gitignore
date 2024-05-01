@@ -1,1 +1,5 @@
+# Ignore .env file
 .env
+
+# Ignore Firebase Configuration file
+flsk-tsk-mngr-firebase-adminsdk-ek8ql-6df0e40e82.json

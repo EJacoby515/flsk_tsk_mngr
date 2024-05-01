@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% set user_id = user_id %}
+
+{% block content %}
+<div class="tasks-container">
+    <h1>Tasks</h1>
+
+    {% with messages = get_flashed_messages(category_filter=['task']) %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div id="task-list" class="card-grid">
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="card priority-{{ task[4].lower() }}">
+                    <div class="card-header"></div>
+                    <div class="card-content">
+                        <h4 class="card-title">{{ task[2] }}</h4>
+                        <p>Description: {{ task[3] }}</p>
+                        <p>Status: {{ task[5] }}</p>
+                        <p>Created At: {{ task[6] }}</p>
+                        <p>Modified At: {{ task[7] }}</p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editTaskModal"
+                           data-task-id="{{ task[0] }}" data-task-title="{{ task[2] }}" data-task-description="{{ task[3] }}"
+                           data-task-priority="{{ task[4] }}" data-task-status="{{ task[5] }}">Edit</a>
+                        <form action="{{ url_for('api.task', task_id=task[0]) }}" method="POST" class="delete-form">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tasks found.</p>
+        {% endif %}
+    </div>
+
+    <div class="ai-arrange-container">
+        <button id="ai-arrange-btn" class="btn btn-primary"><i class="fa-sharp fas fa-bolt"></i> AI Arrange <i class="fa-sharp fas fa-bolt"></i></button>
+    </div>
+    <!-- Edit Task Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-task-form" action="{{ url_for('api.edit_task', task_id='/') }}" method="POST">
+                    <input type="hidden" id="edit-task-id" name="task_id" value="">
+                    <div class="form-group">
+                        <label for="edit-title">Title:</label>
+                        <input type="text" id="edit-title" name="title" class="form-control" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Description:</label>
+                        <textarea id="edit-description" name="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-priority">Priority:</label>
+                        <select id="edit-priority" name="priority" class="form-control">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-status">Status:</label>
+                        <select id="edit-status" name="status" class="form-control">
+                            <option value="open">Open</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="edit-task-form" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="task-form">
+    <h2>Add Task</h2>
+    <form id="add-task-form" action="{{ url_for('api.tasks') }}" method="POST">
+        <input type="hidden" id="user_id" name="user_id" value="{{ user_id }}">
+        <input type="hidden" id="order_index" name="order_index" value="0">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority" class="form-control">
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" name="status" class="form-control">
+                <option value="open" selected>Open</option>
+                <option value="in progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+</div>
+</div>
+{% endblock %}

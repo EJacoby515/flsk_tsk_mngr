@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Task Analytics{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <h1>Task Analytics</h1>
+    <div class="analytics-cards">
+        <div class="card">
+            <div class="card-content">
+                <h3>Open Tasks</h3>
+                <p class="count">{{ open_tasks_count }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h3>In Progress Tasks</h3>
+                <p class="count">{{ in_progress_tasks_count }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h3>Completed Tasks</h3>
+                <p class="count">{{ completed_tasks_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
